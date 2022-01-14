@@ -13,6 +13,7 @@ exports.handler = async (event, context) => {
     const bucket = event.Records[0].s3.bucket.name;
     const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
     let result;
+    let body;
     try {
         const params = {
             Bucket: bucket,
@@ -27,9 +28,26 @@ exports.handler = async (event, context) => {
         return;
     }
     try {
-    	const body = result.Body.toString('utf-8')
+    	body = result.Body.toString('utf-8')
     	if(body === 's3AccessCheck') return;
+    } catch (error) {
+        console.error('Data parse error');
+        console.error(event.Records[0]);
+        console.error(body);
+        console.error(error);
+        return;
+    }
+    try {
         const full = JSON.parse(body)
+    } catch (error) {
+        console.error('JSON parsing error');
+        console.error(event.Records[0]);
+        console.error(body);
+        console.error(error);
+        return;
+    }
+
+    try {
 		const lineup = full.Blocks
 			.filter(b => b.BlockType === 'LINE')
 			.map(b => b.Text)

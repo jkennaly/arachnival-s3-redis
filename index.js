@@ -21,7 +21,13 @@ exports.handler = async (event, context) => {
         
         result = await s3.getObject(params).promise();
         if(!result || !result.Body || ! result.Body.toString('utf-8')) throw new Error('invalid S3 object')
-	    const full = JSON.parse(result)
+	    
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    try {
+        const full = JSON.parse(result)
 		const lineup = full.Blocks
 			.filter(b => b.BlockType === 'LINE')
 			.map(b => b.Text)
@@ -32,7 +38,9 @@ exports.handler = async (event, context) => {
 		})
 	    client.quit()
     } catch (error) {
-        console.log(error);
+        console.error('Data handling error');
+        console.error(result);
+        console.error(error);
         return;
     }
 

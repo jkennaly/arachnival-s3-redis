@@ -27,7 +27,9 @@ exports.handler = async (event, context) => {
         return;
     }
     try {
-        const full = JSON.parse(result.Body.toString('utf-8'))
+    	const body = result.Body.toString('utf-8')
+    	if(body === 's3AccessCheck') return;
+        const full = JSON.parse(body)
 		const lineup = full.Blocks
 			.filter(b => b.BlockType === 'LINE')
 			.map(b => b.Text)
@@ -40,10 +42,8 @@ exports.handler = async (event, context) => {
     } catch (error) {
         console.error('Data handling error');
         console.error(event.Records[0]);
-        console.error(result.Body.toString('utf-8'));
+        console.error(body);
         console.error(error);
         return;
     }
-
-    return job
 };

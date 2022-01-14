@@ -12,11 +12,13 @@ exports.handler = async (event, context) => {
     // Get the object from the event and show its content type
     const bucket = event.Records[0].s3.bucket.name;
     const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-    const job = key.match(/^\w+\/(\w+)\/\w+/)[1]
-    if(!job) {
+    const matched = key.match(/^\w+\/(\w+)\/\w+/)
+    if(!matched || !matched.length) {
     	console.error('invalid key')
+    	console.error(key)
     	console.error(JSON.stringify(event, null, 2))
     }
+    const job = matched[1]
     let result, full, body
     try {
         const params = {

@@ -62,6 +62,7 @@ exports.handler = async (event, context) => {
 			.map(b => b.Text)
 	    await client.connect()
 	    const rawIndex = `textract-job.${job}`
+    		console.log('rawIndex', rawIndex, lineup)
 	    const leRaw = await client.get(rawIndex)
 	    if(!leRaw) {
         	console.error('No lineupUrl found')

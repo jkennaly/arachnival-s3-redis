@@ -12,6 +12,11 @@ exports.handler = async (event, context) => {
     // Get the object from the event and show its content type
     const bucket = event.Records[0].s3.bucket.name;
     const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+    const job = key.match(/^\w+\/(\w+)\/\w+/)[1]
+    if(!job) {
+    	console.error('invalid key')
+    	console.error(JSON.stringify(event, null, 2))
+    }
     let result, full, body
     try {
         const params = {
@@ -50,11 +55,10 @@ exports.handler = async (event, context) => {
 		const lineup = full.Blocks
 			.filter(b => b.BlockType === 'LINE')
 			.map(b => b.Text)
-	    const leKey = 'arach-lineup.' + key
-	    console.log('key', key)
-	    delete full.Blocks
-	    console.log('not blocks', full)
 	    await client.connect()
+	    const leRaw = await client.get(`textract-job.${job}`)
+	    const leIndex = decodeURIComponent(leRaw.replace(/\+/g, ' '));
+    	const leKey = 'arach-lineup.' + leIndex
 	  	await client.set(leKey, JSON.stringify(lineup), {
 			EX: 3600 * 24 * 30
 		})

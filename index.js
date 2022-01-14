@@ -55,12 +55,13 @@ exports.handler = async (event, context) => {
 	  	await client.set(leKey, lineup, {
 			EX: 3600 * 24 * 30
 		})
-	    await client.quit()
     } catch (error) {
         console.error('Data handling error');
         console.error(event.Records[0]);
         console.error(body);
         console.error(error);
         return;
+    } finally () {
+    	await client.quit()
     }
 };

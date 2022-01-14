@@ -69,7 +69,8 @@ exports.handler = async (event, context) => {
         	console.error(rawIndex)
         	console.error(leRaw)
 	    } else {
-		    const leIndex = decodeURIComponent(leRaw.replace(/\+/g, ' '));
+		    const leIndex = decodeURIComponent(leRaw.replace(/\+/g, ' '))
+		    	.match(/(.*)\..+$/)[1]
 	    	const leKey = 'arach-lineup.' + leIndex
     		console.log('leIndex', leIndex, leKey)
 		  	await client.set(leKey, JSON.stringify(lineup), {

@@ -59,11 +59,16 @@ exports.handler = async (event, context) => {
 			.map(b => b.Text)
 	    await client.connect()
 	    const leRaw = await client.get(`textract-job.${job}`)
-	    const leIndex = decodeURIComponent(leRaw.replace(/\+/g, ' '));
-    	const leKey = 'arach-lineup.' + leIndex
-	  	await client.set(leKey, JSON.stringify(lineup), {
-			EX: 3600 * 24 * 30
-		})
+	    if(!leRaw) {
+        	console.error('No lineupUrl found')
+        	console.error(leRaw)
+	    } else {
+		    const leIndex = decodeURIComponent(leRaw.replace(/\+/g, ' '));
+	    	const leKey = 'arach-lineup.' + leIndex
+		  	await client.set(leKey, JSON.stringify(lineup), {
+				EX: 3600 * 24 * 30
+			})
+		}
     } catch (error) {
         console.error('Data handling error');
         console.error(event.Records[0]);

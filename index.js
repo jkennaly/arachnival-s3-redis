@@ -35,7 +35,10 @@ exports.handler = async (event, context) => {
     }
     try {
     	body = result.Body.toString('utf-8')
-    	if(body === 's3AccessCheck') return;
+    	if(body === 's3AccessCheck') {
+    		console.log('s3AccessCheck not processed')
+    		return	
+    	} 
     } catch (error) {
         console.error('Data parse error');
         console.error(event.Records[0]);

@@ -27,7 +27,7 @@ exports.handler = async (event, context) => {
         return;
     }
     try {
-        const full = JSON.parse(result)
+        const full = JSON.parse(result.Body.toString('utf-8'))
 		const lineup = full.Blocks
 			.filter(b => b.BlockType === 'LINE')
 			.map(b => b.Text)
@@ -39,7 +39,7 @@ exports.handler = async (event, context) => {
 	    client.quit()
     } catch (error) {
         console.error('Data handling error');
-        console.error(result);
+        console.error(result.Body.toString('utf-8'));
         console.error(error);
         return;
     }

@@ -62,7 +62,7 @@ exports.handler = async (event, context) => {
 			.map(b => b.Text)
 	    await client.connect()
 	    const rawIndex = `textract-job.${job}`
-    		console.log('rawIndex', rawIndex, lineup)
+    	//console.log('rawIndex', rawIndex, lineup)
 	    const leRaw = await client.get(rawIndex)
 	    if(!leRaw) {
         	console.error('No lineupUrl found')
@@ -71,6 +71,7 @@ exports.handler = async (event, context) => {
 	    } else {
 		    const leIndex = decodeURIComponent(leRaw.replace(/\+/g, ' '));
 	    	const leKey = 'arach-lineup.' + leIndex
+    		console.log('leIndex', leIndex, leKey)
 		  	await client.set(leKey, JSON.stringify(lineup), {
 				EX: 3600 * 24 * 30
 			})

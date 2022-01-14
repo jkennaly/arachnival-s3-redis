@@ -12,8 +12,7 @@ exports.handler = async (event, context) => {
     // Get the object from the event and show its content type
     const bucket = event.Records[0].s3.bucket.name;
     const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-    let result;
-    let body;
+    let result, full, body
     try {
         const params = {
             Bucket: bucket,
@@ -38,7 +37,7 @@ exports.handler = async (event, context) => {
         return;
     }
     try {
-        const full = JSON.parse(body)
+        full = JSON.parse(body)
     } catch (error) {
         console.error('JSON parsing error');
         console.error(event.Records[0]);

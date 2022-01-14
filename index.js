@@ -51,6 +51,7 @@ exports.handler = async (event, context) => {
 			.filter(b => b.BlockType === 'LINE')
 			.map(b => b.Text)
 	    const leKey = 'arach-lineup.' + key
+	    console.log('key', key)
 	    await client.connect()
 	  	await client.set(leKey, JSON.stringify(lineup), {
 			EX: 3600 * 24 * 30

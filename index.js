@@ -52,6 +52,8 @@ exports.handler = async (event, context) => {
 			.map(b => b.Text)
 	    const leKey = 'arach-lineup.' + key
 	    console.log('key', key)
+	    delete full.Blocks
+	    console.log('not blocks', full)
 	    await client.connect()
 	  	await client.set(leKey, JSON.stringify(lineup), {
 			EX: 3600 * 24 * 30

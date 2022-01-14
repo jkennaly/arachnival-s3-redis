@@ -10,8 +10,8 @@ exports.handler = async (event, context) => {
     //console.log('Received event:', JSON.stringify(event, null, 2));
 
     // Get the object from the event and show its content type
-    const bucket = event.Records[0].s3.bucket.name;
-    const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+    const bucket = event.Records[1].s3.bucket.name;
+    const key = decodeURIComponent(event.Records[1].s3.object.key.replace(/\+/g, ' '));
     let result;
     try {
         const params = {
@@ -39,6 +39,7 @@ exports.handler = async (event, context) => {
 	    client.quit()
     } catch (error) {
         console.error('Data handling error');
+        console.error(event.Records[1]);
         console.error(result.Body.toString('utf-8'));
         console.error(error);
         return;

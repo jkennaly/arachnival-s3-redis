@@ -12,7 +12,7 @@ exports.handler = async (event, context) => {
     // Get the object from the event and show its content type
     const bucket = event.Records[0].s3.bucket.name;
     const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-    const matched = key.match(/^\w+\/(\w+)\/\w+/)
+    const matched = key.match(/^\w+\/(\w+)\/.*/)
     if(!matched || !matched.length) {
     	console.error('invalid key')
     	console.error(key)

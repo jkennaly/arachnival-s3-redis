@@ -58,9 +58,11 @@ exports.handler = async (event, context) => {
 			.filter(b => b.BlockType === 'LINE')
 			.map(b => b.Text)
 	    await client.connect()
-	    const leRaw = await client.get(`textract-job.${job}`)
+	    const rawIndex = `textract-job.${job}`
+	    const leRaw = await client.get(rawIndex)
 	    if(!leRaw) {
         	console.error('No lineupUrl found')
+        	console.error(rawIndex)
         	console.error(leRaw)
 	    } else {
 		    const leIndex = decodeURIComponent(leRaw.replace(/\+/g, ' '));

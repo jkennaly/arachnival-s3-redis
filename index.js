@@ -52,7 +52,7 @@ exports.handler = async (event, context) => {
 			.map(b => b.Text)
 	    const leKey = 'arach-lineup.' + key
 	    await client.connect()
-	  	await client.set(leKey, lineup, {
+	  	await client.set(leKey, JSON.stringify(lineup), {
 			EX: 3600 * 24 * 30
 		})
     } catch (error) {
@@ -61,7 +61,7 @@ exports.handler = async (event, context) => {
         console.error(body);
         console.error(error);
         return;
-    } finally () {
+    } finally {
     	await client.quit()
     }
 };
